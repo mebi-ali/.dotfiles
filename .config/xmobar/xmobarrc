@@ -1,0 +1,68 @@
+Config {
+   	font = "xft:Zekton:size=10:bold:antialias=true"
+       , additionalFonts = [ "xft:FontAwesome:size=6" ]
+       , allDesktops = True
+       , bgColor = "#282c34"
+       , fgColor = "#bbc2cf"
+       , position = TopW L 95
+       , alpha = 255 
+       , iconOffset = -1
+       , persistent = True
+       , hideOnStart = False
+       , lowerOnStart = True
+       , pickBroadest = False     
+       , iconRoot = "/home/mebi-ali/.xmonad/xmp"  -- default: "."
+       
+       , commands = [
+		
+		     Run Cpu
+       		  	[ "-t", "<icon=fa6-microchip-solid_24.xpm/> <total>%"
+        	 	, "-p", "3"
+        	 	, "-H", "50", "-h", "red"
+        	 	, "-L", "3"
+        	 	, "-n", "green"
+        	 	] 10
+
+                    , Run Memory ["-t", "<icon=fa6-memory-solid_24.xpm/> <usedratio>% used, <available>M free"] 10
+	                    
+		    , Run Date "<fc=#ee9a00>%Y-%b-%0d %a %H:%M:%S</fc>" "date" 10
+
+                    , Run DynNetwork ["-t","<fc=#4db5bd><fn=1></fn></fc> <rx>, <fc=#c678dd><fn=1></fn></fc> <tx>"
+                                     ,"-H","200"
+                                     ,"-L","10"
+                                     ,"-h","#bbc2cf"
+                                     ,"-l","#bbc2cf"
+                                     ,"-n","#bbc2cf"] 50
+
+                    , Run CoreTemp ["-t", "<fc=#CDB464><fn=1></fn></fc> <core0>°"
+                                   , "-L", "30"
+                                   , "-H", "75"
+                                   , "-l", "lightblue"
+                                   , "-n", "#bbc2cf"
+                                   , "-h", "#aa4450"] 50
+
+                    -- battery monitor
+                   
+		    ,  Run Battery
+         		[ "-t", "<acstatus> <left>"
+         		, "--"
+         		, "-O", "<icon=fa6-plug-solid_24.xpm/>"
+         		, "-i", "<icon=fa6-plug-solid_24.xpm/>"
+         		, "-o", ""
+         		, "-L", "20", "-l", "red"
+         		, "-H", "80", "-h", "green"
+         		, "-m", "white"
+         		, "-p", "green"  -- This appears to not work on some systems (Lenovo X1, Legion)
+         		, "-f", "ACAD/online"  -- Specific to the Lenovo Legion series
+         		, "-P"
+         		, "--lows", "<icon=fa6-battery-quarter-solid_24.xpm/>"
+        		, "--mediums", "<icon=fa6-battery-half-solid_24.xpm/>"
+        	 	, "--highs", "<icon=fa6-battery-full-solid_24.xpm/>"
+        	 	] 600
+                    
+		, Run StdinReader
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "%StdinReader% }{ %cpu% | %coretemp% | %memory% | %battery% | %dynnetwork% | %date%  |"   -- #69DFFA
+       }
