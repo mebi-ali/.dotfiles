@@ -1,68 +1,84 @@
-Config {
-   	font = "xft:Zekton:size=10:bold:antialias=true"
-       , additionalFonts = [ "xft:FontAwesome:size=6" ]
-       , allDesktops = True
-       , bgColor = "#282c34"
-       , fgColor = "#bbc2cf"
-       , position = TopW L 95
-       , alpha = 255 
+Config { font            = "xft:Ubuntu Mono:weight=bold:pixelsize=14:antialias=true:hinting=true"
+       , additionalFonts = [ "xft:Mononoki:pixelsize=11:antialias=true:hinting=true"
+                           , "xft:Font Awesome 6 Free Solid:pixelsize=12"
+                           , "xft:Font Awesome 6 Brands:pixelsize=12"
+        ]
+       , borderColor = "black"
+       , border = TopB
+       , bgColor = "#505175"
+       , fgColor = "grey"
+       , alpha = 255
+       , position = TopW L 100
+       , textOffset = -1
        , iconOffset = -1
-       , persistent = True
-       , hideOnStart = False
        , lowerOnStart = True
-       , pickBroadest = False     
-       , iconRoot = "/home/mebi-ali/.xmonad/xmp"  -- default: "."
-       
+       , pickBroadest = False
+       , persistent = False
+       , hideOnStart = False
+       , iconRoot = "/home/mebi-ali/.xmonad/xmp"
+       , allDesktops = True
+       , overrideRedirect = True
        , commands = [
-		
-		     Run Cpu
-       		  	[ "-t", "<icon=fa6-microchip-solid_24.xpm/> <total>%"
-        	 	, "-p", "3"
-        	 	, "-H", "50", "-h", "red"
-        	 	, "-L", "3"
-        	 	, "-n", "green"
-        	 	] 10
 
-                    , Run Memory ["-t", "<icon=fa6-memory-solid_24.xpm/> <usedratio>% used, <available>M free"] 10
-	                    
-		    , Run Date "<fc=#ee9a00>%Y-%b-%0d %a %H:%M:%S</fc>" "date" 10
+		    Run Network "wlp2s0" ["-L","0","-H","32",
+                                            "--normal","green",
+                                            "--high","red",
+                                            "-S", "True",
+                                            "-t", "<rx>|<tx>"
+                                           ] 10
 
-                    , Run DynNetwork ["-t","<fc=#4db5bd><fn=1></fn></fc> <rx>, <fc=#c678dd><fn=1></fn></fc> <tx>"
-                                     ,"-H","200"
-                                     ,"-L","10"
-                                     ,"-h","#bbc2cf"
-                                     ,"-l","#bbc2cf"
-                                     ,"-n","#bbc2cf"] 50
+                    , Run Wireless "wlp2s0" ["-L","20","-H","70",
+                                             "--high","green",
+                                             "--normal", "orange",
+                                             "--low","red",
+                                             "-t", "<fc=green><essid>:</fc>"
+                                            ] 10
 
-                    , Run CoreTemp ["-t", "<fc=#CDB464><fn=1></fn></fc> <core0>°"
-                                   , "-L", "30"
-                                   , "-H", "75"
-                                   , "-l", "lightblue"
-                                   , "-n", "#bbc2cf"
-                                   , "-h", "#aa4450"] 50
+                    , Run Cpu ["-L","3","-H","50",
+                               "--normal","green",
+                               "--high","red"
+                              ] 10
 
-                    -- battery monitor
-                   
-		    ,  Run Battery
-         		[ "-t", "<acstatus> <left>"
-         		, "--"
-         		, "-O", "<icon=fa6-plug-solid_24.xpm/>"
-         		, "-i", "<icon=fa6-plug-solid_24.xpm/>"
-         		, "-o", ""
-         		, "-L", "20", "-l", "red"
-         		, "-H", "80", "-h", "green"
-         		, "-m", "white"
-         		, "-p", "green"  -- This appears to not work on some systems (Lenovo X1, Legion)
-         		, "-f", "ACAD/online"  -- Specific to the Lenovo Legion series
-         		, "-P"
-         		, "--lows", "<icon=fa6-battery-quarter-solid_24.xpm/>"
-        		, "--mediums", "<icon=fa6-battery-half-solid_24.xpm/>"
-        	 	, "--highs", "<icon=fa6-battery-full-solid_24.xpm/>"
-        	 	] 600
-                    
-		, Run StdinReader
-                    ]
+                    , Run Memory ["-L", "20", "-H", "80",
+                                  "--low", "green",
+                                  "--normal", "orange",
+                                  "--high", "red",
+                                  "-t","Ram: <usedratio>%"
+                                 ] 10
+
+                    , Run Swap [] 10
+
+                    , Run Com "uname" ["-n"] "" 36000
+
+                    , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
+
+                    , Run BatteryP ["BAT1"]
+           		   ["-t", "Batt: <acstatus> (<left>%)",
+               		    "-L", "10", "-H", "80", "-p", "3",
+            		    "--", "-O", "<fc=green>On</fc> - ", "-i", "",
+            	   	    "-L", "-15", "-H", "-5",
+            	   	    "-l", "red", "-m", "blue", "-h", "green"] 600
+
+		    , Run ThermalZone 0 [] 30
+       
+                    , Run ThermalZone 1 [] 30
+ 
+                    , Run Volume "default" "Master" [] 10
+		    
+                    , Run StdinReader
+        ]
+
+
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader% }{ %cpu% | %coretemp% | %memory% | %battery% | %dynnetwork% | %date%  |"   -- #69DFFA
-       }
+       , template = " %StdinReader%\
+                    \ | %cpu%\
+                    \ | %thermal0% %thermal1%\
+                    \ | %memory% * %swap%\
+                    \ | %wlp2s0wi% %wlp2s0%\
+                    \ }{\
+                    \ <fc=#ee9a00>%date%</fc>\
+                    \ | %uname%\
+                    \ | %default:Master%\
+                    \ | %battery%"
+}
