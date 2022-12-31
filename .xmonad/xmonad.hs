@@ -24,10 +24,12 @@ import System.IO (hPutStrLn) -- for xmobar
 -- util
 import XMonad.Util.Run (safeSpawn, unsafeSpawn, runInTerm, spawnPipe)
 import XMonad.Util.SpawnOnce
-import XMonad.Util.EZConfig (additionalKeysP, additionalMouseBindings)  
+import XMonad.Util.EZConfig (additionalKeys, additionalMouseBindings)  
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.NamedWindows
 import XMonad.Util.WorkspaceCompare
+import XMonad.Util.Cursor
+
 
 -- hooks
 import XMonad.Hooks.DynamicLog
@@ -124,8 +126,9 @@ myLayout = avoidStruts (full ||| tiled ||| grid ||| bsp)
 ------------------------------------------------------------------------
 
 
-myStartupHook = return ()
-
+myStartupHook = do
+    spawnOnce  "nitrogen --restore &"
+    spawnOnce "compton &"
 
 
 ------------------------------------------------------------------------
@@ -181,26 +184,6 @@ ppTitle = xmobarColor myTitleColor "" . shorten myTitleLength
 ------------------------------------------------------------------------
 
 
---myKeys =
---    [("M-" ++ m ++ k, windows $ f i)
---        | (i, k) <- zip (myWorkspaces) (map show [1 :: Int ..])
---        , (f, m) <- [(W.view, ""), (W.shift, "S-"), (copy, "S-C-")]]
---    ++
---    [("S-C-a", windows copyToAll)   -- copy window to all workspaces
---     , ("S-C-z", killAllOtherCopies)  -- kill copies of window on other workspaces
---     , ("M-a", sendMessage MirrorExpand)
---     , ("M-z", sendMessage MirrorShrink)
---     , ("M-s", sendMessage ToggleStruts)
---     , ("M-f", sendMessage $ JumpToLayout "Full")
---     , ("M-t", sendMessage $ JumpToLayout "Tall")
---     , ("M-g", sendMessage $ JumpToLayout "Grid")
---     , ("M-b", sendMessage $ JumpToLayout "BSP")
---     -- , ("M-p", spawn "dmenu_run -p 'Yes Master ?'") -- dmenu
---     , ("M-p", spawn "rofi -show combi -modi combi") -- rofi
---     , ("S-M-t", withFocused $ windows . W.sink) -- flatten floating window to tiled
---     , ("M-C-<Space>", namedScratchpadAction myScratchpads "terminal")
---     , ("M-C-<Return>", namedScratchpadAction myScratchpads "emacs-scratch")
---    ]
 
 
 
@@ -266,8 +249,47 @@ main = do
                         , ppOrder  = \(ws:l:t:ex) -> [ws,l]++ex++[t]
                         } >> updatePointer (0.25, 0.25) (0.25, 0.25)
           }
-	  --`additionalKeysP` myKeys
+	 `additionalKeys`
+	[
+		-- Mute
+		((0, xF86XK_AudioMute),
+     		  spawn "amixer -q set Master toggle")
+
+  		-- Decrease volume.
+  		, ((0, xF86XK_AudioLowerVolume),
+     	 	  spawn "amixer -q set Master 5%-")
+
+ 		-- Increase volume.
+  		, ((0, xF86XK_AudioRaiseVolume),
+     		  spawn "amixer -q set Master 5%+")
+
+  		-- Audio previous.
+  		 , ((0, 0x1008FF16),
+     		  spawn "")
+
+  		-- Play/pause.
+  		, ((0, 0x1008FF14),
+          	  spawn "")
+
+  		-- Audio next.
+  		, ((0, 0x1008FF17),
+     		  spawn "")
+
+
+		-- Brave Browser
+		, ((mod4Mask, xK_w), spawn "brave-browser &")
+
+		--d_menu
+		, ((mod4Mask, xK_d), spawn "dmenu_run &")
+
+		--ScreenShot
+		, ((mod4Mask .|. controlMask .|. shiftMask, xK_p),
+	          spawn "xfce4-screenshooter")
+
+	]
 	
+
+
 
 ------------------------------------------------------------------------
 -- Defualt Keys:

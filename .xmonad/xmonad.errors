@@ -1,7 +1,7 @@
 
-xmonad.hs:269:1: warning: [-Wtabs]
-    Tab character found here, and in one further location.
+xmonad.hs:252:1: warning: [-Wtabs]
+    Tab character found here, and in 51 further locations.
     Please use spaces instead.
     |
-269 |           --`additionalKeysP` myKeys
+252 |          `additionalKeys`
     | ^^^^^^^^
