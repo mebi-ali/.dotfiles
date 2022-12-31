@@ -2,10 +2,11 @@ Config { font            = "xft:Ubuntu Mono:weight=bold:pixelsize=14:antialias=t
        , additionalFonts = [ "xft:Mononoki:pixelsize=11:antialias=true:hinting=true"
                            , "xft:Font Awesome 6 Free Solid:pixelsize=12"
                            , "xft:Font Awesome 6 Brands:pixelsize=12"
-        ]
+       			   , "xft:Font Awesome 6 Free-Regular:pixelsize12"
+	 ]
        , borderColor = "black"
        , border = TopB
-       , bgColor = "#505175"
+       , bgColor = "black"
        , fgColor = "grey"
        , alpha = 255
        , position = TopW L 100
@@ -15,10 +16,11 @@ Config { font            = "xft:Ubuntu Mono:weight=bold:pixelsize=14:antialias=t
        , pickBroadest = False
        , persistent = False
        , hideOnStart = False
-       , iconRoot = "/home/mebi-ali/.xmonad/xmp"
+       , iconRoot = "/home/mebi-ali/.xmonad/xpm"
        , allDesktops = True
        , overrideRedirect = True
        , commands = [
+
 
 		    Run Network "wlp2s0" ["-L","0","-H","32",
                                             "--normal","green",
@@ -31,28 +33,25 @@ Config { font            = "xft:Ubuntu Mono:weight=bold:pixelsize=14:antialias=t
                                              "--high","green",
                                              "--normal", "orange",
                                              "--low","red",
-                                             "-t", "<fc=green><essid>:</fc>"
+                                             "-t", "<fc=blue><essid>:</fc>"
                                             ] 10
 
-                    , Run Cpu ["-L","3","-H","50",
-                               "--normal","green",
-                               "--high","red"
-                              ] 10
+                    , Run Cpu ["-t", "<fn=2>\xf2db</fn> (<total>%)","-H","50","--high","red"] 20
 
-                    , Run Memory ["-L", "20", "-H", "80",
+		    , Run Memory ["-L", "20", "-H", "80",
                                   "--low", "green",
                                   "--normal", "orange",
                                   "--high", "red",
-                                  "-t","Ram: <usedratio>%"
+                                  "-t","<fn=2>\xf233</fn> <usedratio>%"
                                  ] 10
 
                     , Run Swap [] 10
 
                     , Run Com "uname" ["-n"] "" 36000
 
-                    , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
-
-                    , Run BatteryP ["BAT1"]
+		   , Run Date "<fn=2>\xf017</fn>  %b %d %Y - (%H:%M) " "date" 50
+                   
+		   , Run BatteryP ["BAT1"]
            		   ["-t", "Batt: <acstatus> (<left>%)",
                		    "-L", "10", "-H", "80", "-p", "3",
             		    "--", "-O", "<fc=green>On</fc> - ", "-i", "",
@@ -63,7 +62,14 @@ Config { font            = "xft:Ubuntu Mono:weight=bold:pixelsize=14:antialias=t
        
                     , Run ThermalZone 1 [] 30
  
-                    , Run Volume "default" "Master" [] 10
+
+		    , Run Volume "default" "Master" [
+			"--template" , "<fn=2>\xf028</fn> <volume>"
+
+  			, "-L" , "0"
+
+  			, "-l", "<fn=2>\xf6a9</fn> red"
+			] 10
 		    
                     , Run StdinReader
         ]
@@ -71,7 +77,7 @@ Config { font            = "xft:Ubuntu Mono:weight=bold:pixelsize=14:antialias=t
 
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " %StdinReader%\
+       , template = "<fc=white>%StdinReader%</fc>\
                     \ | %cpu%\
                     \ | %thermal0% %thermal1%\
                     \ | %memory% * %swap%\

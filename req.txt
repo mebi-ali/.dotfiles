@@ -2,3 +2,4 @@ python
 xmonad
 libghc-xmonad-contrib-dev
 xmobar
+download font awesome for icons (its simple just download copy to fonts and update fonts folder)
