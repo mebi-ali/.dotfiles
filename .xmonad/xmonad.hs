@@ -64,7 +64,7 @@ import XMonad.Actions.UpdatePointer -- update mouse postion
 
 
 myModMask = mod4Mask -- Sets modkey to super/windows key
-myTerminal = "gnome-terminal" -- Sets default terminal
+myTerminal = "urxvt" -- Sets default terminal
 myBorderWidth = 2 -- Sets border width for windows
 myNormalBorderColor = "#839496"
 myFocusedBorderColor = "#268BD2"
