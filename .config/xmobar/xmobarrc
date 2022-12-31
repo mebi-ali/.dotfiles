@@ -2,8 +2,7 @@ Config { font            = "xft:Ubuntu Mono:weight=bold:pixelsize=14:antialias=t
        , additionalFonts = [ "xft:Mononoki:pixelsize=11:antialias=true:hinting=true"
                            , "xft:Font Awesome 6 Free Solid:pixelsize=12"
                            , "xft:Font Awesome 6 Brands:pixelsize=12"
-       			   , "xft:Font Awesome 6 Free-Regular:pixelsize12"
-	 ]
+       			   , "xft:Font Awesome 6 Free-Regular:pixelsize12" ]
        , borderColor = "black"
        , border = TopB
        , bgColor = "black"
@@ -52,7 +51,7 @@ Config { font            = "xft:Ubuntu Mono:weight=bold:pixelsize=14:antialias=t
 		   , Run Date "<fn=2>\xf017</fn>  %b %d %Y - (%H:%M) " "date" 50
                    
 		   , Run BatteryP ["BAT1"]
-           		   ["-t", "Batt: <acstatus> (<left>%)",
+           		   ["-t", "<fn=2>\xf240</fn> <acstatus> <left>%",
                		    "-L", "10", "-H", "80", "-p", "3",
             		    "--", "-O", "<fc=green>On</fc> - ", "-i", "",
             	   	    "-L", "-15", "-H", "-5",
@@ -77,14 +76,8 @@ Config { font            = "xft:Ubuntu Mono:weight=bold:pixelsize=14:antialias=t
 
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "<fc=white>%StdinReader%</fc>\
-                    \ | %cpu%\
-                    \ | %thermal0% %thermal1%\
-                    \ | %memory% * %swap%\
-                    \ | %wlp2s0wi% %wlp2s0%\
-                    \ }{\
-                    \ <fc=#ee9a00>%date%</fc>\
-                    \ | %uname%\
-                    \ | %default:Master%\
-                    \ | %battery%"
+
+
+     , template = "<fc=white>%StdinReader%</fc> | %cpu% | %thermal0% %thermal1% | %memory% * %swap% | %wlp2s0wi% %wlp2s0%  }{ <fc=#ee9a00>%date%</fc> | %uname% | %default:Master% | %battery%"
+
 }
