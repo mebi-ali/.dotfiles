@@ -6,3 +6,4 @@ download font awesome for icons (its simple just download copy to fonts and upda
 rxvt-unicode xsel  ( add perl extensions)
 compton
 nitrogen
+rofi

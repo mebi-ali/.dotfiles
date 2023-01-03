@@ -252,39 +252,31 @@ main = do
 	 `additionalKeys`
 	[
 		-- Mute
-		((0, xF86XK_AudioMute),
-     		  spawn "amixer -q set Master toggle")
-
-  		-- Decrease volume.
-  		, ((0, xF86XK_AudioLowerVolume),
-     	 	  spawn "amixer -q set Master 5%-")
-
- 		-- Increase volume.
-  		, ((0, xF86XK_AudioRaiseVolume),
-     		  spawn "amixer -q set Master 5%+")
-
-  		-- Audio previous.
-  		 , ((0, 0x1008FF16),
-     		  spawn "")
-
-  		-- Play/pause.
-  		, ((0, 0x1008FF14),
-          	  spawn "")
-
-  		-- Audio next.
-  		, ((0, 0x1008FF17),
-     		  spawn "")
-
+		((0, xF86XK_AudioMute), spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
+ 	        
+		-- Decrease
+		, ((0, xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ -10%")
+  		
+		-- Increase
+		, ((0, xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ +10%")
+	
+		-- Brightness Up
+		, ((0, xF86XK_MonBrightnessUp), spawn "lux -a 10%")
+ 		
+		-- Brightness Down
+		, ((0, xF86XK_MonBrightnessDown), spawn "lux -s 10%")
 
 		-- Brave Browser
-		, ((mod4Mask, xK_w), spawn "brave-browser &")
+		,((mod4Mask, xK_w), spawn "brave-browser &")
 
 		--d_menu
-		, ((mod4Mask, xK_d), spawn "dmenu_run &")
+		, ((mod4Mask, xK_d), spawn "/home/mebi-ali/.config/rofi/scripts/launcher_t7")
 
 		--ScreenShot
 		, ((mod4Mask .|. controlMask .|. shiftMask, xK_p),
 	          spawn "xfce4-screenshooter")
+	
+	 
 
 	]
 	
