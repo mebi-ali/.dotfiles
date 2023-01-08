@@ -69,7 +69,10 @@ Config { font            = "xft:Ubuntu Mono:weight=bold:pixelsize=16:antialias=t
 
   			, "-l", "<fn=2>\xf6a9</fn> red"
 			] 10
-		    
+		   
+   		    --trayerpad
+       		    ,Run Com "/home/mebi-ali/.config/xmobar/scripts/systraypad.sh" [] "traypad" 100		    
+   
                     , Run StdinReader
         ]
 
@@ -78,6 +81,6 @@ Config { font            = "xft:Ubuntu Mono:weight=bold:pixelsize=16:antialias=t
        , alignSep = "}{"
 
 
-     , template = "<fc=white>%StdinReader%</fc> | %cpu% | %thermal0% %thermal1% | %memory% * %swap% | %wlp2s0wi% %wlp2s0%  }{ <fc=#ee9a00>%date%</fc> | %uname% | %default:Master% | %battery%"
+     , template = "<fc=white>%StdinReader%</fc> | %cpu% | %thermal0% %thermal1% | %memory% * %swap% | %wlp2s0wi% %wlp2s0%  }{ <fc=#ee9a00>%date%</fc> | %uname% | %default:Master% | %battery% | %traypad%"
 
 }
