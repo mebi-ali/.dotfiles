@@ -24,6 +24,7 @@ import System.IO (hPutStrLn) -- for xmobar
 -- util
 import XMonad.Util.Run (safeSpawn, unsafeSpawn, runInTerm, spawnPipe)
 import XMonad.Util.SpawnOnce
+import XMonad.Util.SpawnNamedPipe
 import XMonad.Util.EZConfig (additionalKeys, additionalMouseBindings)  
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.NamedWindows
@@ -130,6 +131,7 @@ myLayout = avoidStruts (full ||| tiled ||| grid ||| bsp)
 myStartupHook = do
     spawnOnce  "nitrogen --restore &"
     spawnOnce  "compton &"
+    spawnNamedPipe "xmobar ~/.config/xmobar/xmobarrc" "xmobtop"
     spawnOnce "volumeicon &"
     spawnOnce  "nm-tray &" 
     spawnOnce  "trayer --edge top --align right --widthtype request --padding 6 --SetDockType true --SetPartialStrut true --expand true --monitor 1 --transparent true --alpha 0 --tint 0x292d3e --height 18 &"
@@ -145,6 +147,18 @@ myManageHook = composeAll
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
     , isFullscreen                  --> doFullFloat ]
+
+
+------------------------------------------------------------------------
+-- LogHooks:
+------------------------------------------------------------------------
+
+
+myLogHook pipeName = do
+  mh <- getNamedPipe pipeName
+  dynamicLogWithPP myPP { ppOutput = maybe (\_ -> return ()) hPutStrLn mh
+                              }
+
 
 
 
@@ -170,15 +184,12 @@ myUrgentWSRight = "}"
 
 
 -- Custom PP, configure it as you like. It determines what is being written to the bar.
-myPP = xmobarPP {
-ppTitle = xmobarColor myTitleColor "" . shorten myTitleLength
-, ppCurrent = xmobarColor myCurrentWSColor ""
-. wrap myCurrentWSLeft myCurrentWSRight
-, ppVisible = xmobarColor myVisibleWSColor ""
-. wrap myVisibleWSLeft myVisibleWSRight
-, ppUrgent = xmobarColor myUrgentWSColor ""
-. wrap myUrgentWSLeft myUrgentWSRight
-}
+myPP = xmobarPP { ppTitle = xmobarColor "#2DACB7" "" . shorten 50
+                      , ppCurrent = xmobarColor "#E5AC39" "" . wrap "[" "]"
+                      , ppHiddenNoWindows = xmobarColor "#2D2D4C" ""
+                      , ppUrgent = xmobarColor "#E55C50" "#E5F4FF"
+                      , ppHidden = xmobarColor "#82AAFF" "" . wrap "*" ""   -- Hidden workspaces in xmobar
+                      }
 
 
 
@@ -240,17 +251,7 @@ main = do
         , modMask            = myModMask
         , normalBorderColor  = myNormalBorderColor
         , focusedBorderColor = myFocusedBorderColor
-        , logHook = dynamicLogWithPP myPP  
-                        { ppOutput = \x -> hPutStrLn xmproc0 x 
-                        , ppCurrent = xmobarColor myppCurrent "" . wrap "[" "]" -- Current workspace in xmobar
-                        , ppVisible = xmobarColor myppVisible ""                -- Visible but not current workspace
-                        , ppHidden = xmobarColor myppHidden "" . wrap "+" ""   -- Hidden workspaces in xmobar
-                        , ppHiddenNoWindows = xmobarColor  myppHiddenNoWindows ""        -- Hidden workspaces (no windows)
-                        , ppTitle = xmobarColor  myppTitle "" . shorten 80     -- Title of active window in xmobar
-                        , ppSep =  "<fc=#586E75> | </fc>"                     -- Separators in xmobar
-                        , ppUrgent = xmobarColor  myppUrgent "" . wrap "!" "!"  -- Urgent workspace
-                        , ppOrder  = \(ws:l:t:ex) -> [ws,l]++ex++[t]
-                        } >> updatePointer (0.25, 0.25) (0.25, 0.25)
+        , logHook = myLogHook "xmobtop" <+> logHook desktopConfig  
           }
 	 `additionalKeys`
 	[

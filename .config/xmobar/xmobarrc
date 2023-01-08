@@ -1,4 +1,4 @@
-Config { font            = "xft:Ubuntu Mono:weight=bold:pixelsize=14:antialias=true:hinting=true"
+Config { font            = "xft:Ubuntu Mono:weight=bold:pixelsize=16:antialias=true:hinting=true"
        , additionalFonts = [ "xft:Mononoki:pixelsize=11:antialias=true:hinting=true"
                            , "xft:Font Awesome 6 Free Solid:pixelsize=12"
                            , "xft:Font Awesome 6 Brands:pixelsize=12"
@@ -8,7 +8,7 @@ Config { font            = "xft:Ubuntu Mono:weight=bold:pixelsize=14:antialias=t
        , bgColor = "black"
        , fgColor = "grey"
        , alpha = 255
-       , position = TopW L 100
+       , position = BottomP 0 100
        , textOffset = -1
        , iconOffset = -1
        , lowerOnStart = True
