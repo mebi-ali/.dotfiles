@@ -115,4 +115,30 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-alias dotfiles='/usr/bin/git --git-dir=/home/mebi-ali/.dotfiles/ --work-tree=/home/mebi-ali'
+# Edit .zshrc and add this line
+
+####   alias 
+alias dotfiles='/usr/bin/git --git-dir=/home/mebi_ali/.dotfiles/ --work-tree=/home/mebi_ali'
+
+# Merge Xresources
+alias merge='xrdb -merge ~/.Xresources'
+
+
+# git
+alias addup='git add -u'
+alias addall='git add .'
+alias branch='git branch'
+alias checkout='git checkout'
+alias clone='git clone'
+alias commit='git commit -m'
+alias fetch='git fetch'
+alias pull='git pull origin'
+alias push='git push origin'
+alias stat='git status'  # 'status' is protected name so using 'stat' instead
+alias tag='git tag'
+alias newtag='git tag -a'
+
+
+
+
+
