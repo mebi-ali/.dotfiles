@@ -31,6 +31,7 @@ import XMonad.Util.WorkspaceCompare
 import XMonad.Util.Cursor
 
 
+
 -- hooks
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks (avoidStruts, docksStartupHook, manageDocks, ToggleStruts(..))
@@ -128,8 +129,10 @@ myLayout = avoidStruts (full ||| tiled ||| grid ||| bsp)
 
 myStartupHook = do
     spawnOnce  "nitrogen --restore &"
-    spawnOnce "compton &"
-
+    spawnOnce  "compton &"
+    spawnOnce "volumeicon &"
+    spawnOnce  "nm-tray &" 
+    spawnOnce  "trayer --edge top --align right --widthtype request --padding 6 --SetDockType true --SetPartialStrut true --expand true --monitor 1 --transparent true --alpha 0 --tint 0x292d3e --height 18 &"
 
 ------------------------------------------------------------------------
 -- Window rules:
@@ -270,7 +273,7 @@ main = do
 		,((mod4Mask, xK_w), spawn "brave-browser &")
 
 		--d_menu
-		, ((mod4Mask, xK_d), spawn "/home/mebi-ali/.config/rofi/scripts/launcher_t7")
+		, ((mod4Mask, xK_d), spawn "rofi -show run")
 
 		--ScreenShot
 		, ((mod4Mask .|. controlMask .|. shiftMask, xK_p),
