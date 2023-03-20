@@ -7,3 +7,4 @@ rxvt-unicode xsel  ( add perl extensions)
 compton
 nitrogen
 rofi
+kitty
